@@ -1,26 +1,28 @@
-package domain.entities
+package demo.domain
 
-import org.springframework.data.annotation.Id
-import org.springframework.data.relational.core.mapping.Table
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import org.hibernate.annotations.UuidGenerator
 
-@Table
-data class Account (
-    @Id val id:String?,
-    val balance: Double,
+
+@Entity
+class Account (
+    var balance: Double,
     var type: String,
-    var owner: String)
+    var owner: String,
+    @Id @UuidGenerator var id:String? = null)
 
-@Table
-data class Customer (
-    @Id val id:String?,
-    val username: String,
+@Entity
+class Customer (
+    var username: String,
     var firstname: String,
     var lastname:String,
-    var password: String)
+    var password: String,
+    @Id @UuidGenerator var id:String? = null)
 
-@Table
-data class Transaction(
-    @Id val id:String?,
-    val owner: String,
-    var amount: Double)
+@Entity
+class Transaction(
+    var owner: String,
+    var amount: Double,
+    @Id @UuidGenerator var id:String? = null)
 

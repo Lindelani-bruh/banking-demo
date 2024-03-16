@@ -1,16 +1,16 @@
 package demo.application.account.commands
 
 import com.trendyol.kediatr.CommandHandler
+import demo.domain.Account
+import demo.domain.Customer
 import demo.domain.IAccountRepository
 import demo.domain.IUserRepository
-import domain.entities.Account
-import domain.entities.Customer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
-class RegisterCommandHandler ( private val userRepository: IUserRepository, private val accounRepository: IAccountRepository)
+class RegisterCommandHandler (private val userRepository: IUserRepository, private val accounRepository: IAccountRepository)
     : CommandHandler<RegisterCommand> {
 
 
@@ -19,13 +19,13 @@ class RegisterCommandHandler ( private val userRepository: IUserRepository, priv
     override suspend fun handle(command: RegisterCommand) {
         getLogger().info("registering account ${command.username}")
         val user = userRepository.save(
-            Customer(null,
+            Customer(
             username = command.username,
             firstname = command.firstname,
             lastname = command.lastname,
             password =  command.password)
         )
-        accounRepository.save(Account(id=null, balance=0.0, type=command.type, owner=user.id.toString() ))
+        accounRepository.save(Account(balance=0.0, type=command.type, owner=user.id.toString() ))
         getLogger().info("account registered ${command.username}")
     }
 }

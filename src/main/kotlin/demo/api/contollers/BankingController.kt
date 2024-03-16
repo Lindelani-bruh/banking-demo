@@ -6,8 +6,8 @@ import demo.application.account.queries.AccountQuery
 import demo.application.deposit.commands.DepositCommand
 import demo.application.reports.queries.ReportsQuery
 import demo.application.transfer.commands.TransferCommand
-import domain.entities.Account
-import domain.entities.Transaction
+import demo.domain.Account
+import demo.domain.Transaction
 import org.springframework.web.bind.annotation.*
 
 
@@ -20,8 +20,6 @@ class BankingController (private val mediator: Mediator) {
         const val ACCOUNT_PATH = "/account"
         const val REPORT_PATH = "/reports"
     }
-
-
 
     @PostMapping("$DEPOSIT_PATH/{accountid}")
     suspend  fun deposit(@RequestBody command: DepositContract, @PathVariable accountid:String) {

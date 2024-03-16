@@ -1,6 +1,6 @@
 package demo.application.reports.queries
 
 import com.trendyol.kediatr.Query
-import domain.entities.Transaction
+import demo.domain.Transaction
 
 class ReportsQuery() : Query< Iterable<Transaction>>
