@@ -17,7 +17,9 @@ class Customer (
     var username: String,
     var firstname: String,
     var lastname:String,
+    val email: String,
     var password: String,
+    var role: Role? = Role.USER,
     @Id @UuidGenerator var id:String? = null)
 
 @Entity
@@ -26,3 +28,7 @@ class Transaction(
     var amount: Double,
     @Id @UuidGenerator var id:String? = null)
 
+
+enum class Role {
+    USER, ADMIN
+}

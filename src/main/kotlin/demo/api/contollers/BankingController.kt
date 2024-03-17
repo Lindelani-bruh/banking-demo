@@ -8,10 +8,13 @@ import demo.application.reports.queries.ReportsQuery
 import demo.application.transfer.commands.TransferCommand
 import demo.domain.Account
 import demo.domain.Transaction
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import org.springframework.web.bind.annotation.*
 
 
 @RestController
+@RequestMapping("/api")
 class BankingController (private val mediator: Mediator) {
 
     companion object {
@@ -22,36 +25,51 @@ class BankingController (private val mediator: Mediator) {
     }
 
     @PostMapping("$DEPOSIT_PATH/{accountid}")
-    suspend  fun deposit(@RequestBody command: DepositContract, @PathVariable accountid:String) {
-        mediator.send(DepositCommand(command.amount, command.currency, accountid ))
+    fun deposit(@RequestBody command: DepositContract, @PathVariable accountid:String) {
+        runBlocking {
+            mediator.send(DepositCommand(command.amount, command.currency, accountid ))
+        }
     }
 
 
     @PostMapping("$TRANSFER_PATH/{accountid}")
-    suspend fun transfer(@RequestBody command: TransferContract, @PathVariable accountid:String) {
-        mediator.send(TransferCommand(command.amount, command.destinationAccount, command.currency, accountid ))
+    fun transfer(@RequestBody command: TransferContract, @PathVariable accountid:String) {
+        runBlocking {
+            mediator.send(TransferCommand(command.amount, command.destinationAccount, command.currency, accountid ))
+        }
     }
 
     @PostMapping(ACCOUNT_PATH)
-    suspend fun account(@RequestBody command: AccountContract) {
-        mediator.send(
-            RegisterCommand(command.username,
-                command.firstname,
-                command.lastname,
-                command.password,
-                command.type))
+    fun account(@RequestBody command: AccountContract) {
+        runBlocking {
+            mediator.send(
+                RegisterCommand(command.username,
+                    command.firstname,
+                    command.lastname,
+                    command.password,
+                    command.email,
+                    command.type)
+            )
+        }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @GetMapping("$ACCOUNT_PATH/{accountid}")
-    suspend fun getAccount(@PathVariable accountid: String) : Iterable<Account> {
-        val account = mediator.send(AccountQuery(accountid))
-        return account
+    fun getAccount(@PathVariable accountid: String) : Iterable<Account>{
+
+        var data = runBlocking {
+            mediator.send(AccountQuery(accountid))
+        }
+
+        return data
     }
 
     @GetMapping(REPORT_PATH)
-    suspend fun reports() : Iterable<Transaction> {
-        val reports = mediator.send(ReportsQuery())
-        return reports
+    fun reports() : Iterable<Transaction> {
+        val data = runBlocking {
+            mediator.send(ReportsQuery())
+        }
+        return data
     }
 }
 
@@ -65,6 +83,7 @@ class AccountContract (
     val username: String,
     var firstname: String,
     var lastname: String,
+    var email: String,
     var password: String,
     var type: String)
 

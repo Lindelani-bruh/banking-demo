@@ -31,11 +31,11 @@ dependencies {
 	implementation("com.trendyol:kediatr-koin-starter:3.0.0")
 	implementation("com.trendyol:kediatr-quarkus-starter:3.0.0")
 	/* security */
-	/*implementation("io.jsonwebtoken:jjwt-api:0.12.3")
+	implementation("io.jsonwebtoken:jjwt-api:0.12.3")
 	implementation("io.jsonwebtoken:jjwt-impl:0.12.3")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.12.3")
 	implementation("org.springframework.boot:spring-boot-starter-security")
-	testImplementation("org.springframework.security:spring-security-test")*/
+	testImplementation("org.springframework.security:spring-security-test")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(module = "mockito-core")

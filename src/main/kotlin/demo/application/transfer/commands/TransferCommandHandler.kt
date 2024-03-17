@@ -20,9 +20,7 @@ class TransferCommandHandler (
 
     override suspend fun handle(command: TransferCommand) {
         val from = accountRepository.findById(command.fromAccount);
-        println("account-1: ${from.get().id}")
         val to = accountRepository.findById(command.destinationAccount);
-        println("account-2: ${to.get().id}")
 
         //TODO: do something with the currency.
         if(!from.isEmpty && isAbleToTransfer(command.amount, from.get(), to.get())){

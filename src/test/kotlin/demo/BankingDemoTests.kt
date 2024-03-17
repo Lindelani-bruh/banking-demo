@@ -24,16 +24,16 @@ class BankingDemoTests (
     @Test
     fun `Assert deposit was successful, status code`() {
 
-        val johnDoe = userRepository.save(Customer( "JohnB", "John", "Doe", "12345"))
-        var account = accountRepository.save( Account(balance = 20000.00, type = "savings", owner = johnDoe.id.toString()) )
+        val johnDoe = userRepository.save(Customer( "JohnB", "John", "Doe", "example-1@demo.com", "12345"))
+        val account = accountRepository.save( Account(balance = 20000.00, type = "savings", owner = johnDoe.id.toString()) )
         val TEST_COMMAND = DepositCommand(2000.00, "ZAR", account.id.toString())
 
         runBlocking {
             mediator.send(TEST_COMMAND)
         }
 
-        val results = accountRepository.findById(account.id.toString());
-        assertThat(results.get().balance).isEqualTo(22000.0)
+        val RESULT = accountRepository.findById(account.id.toString())
+        assertThat(RESULT.get().balance).isEqualTo(22000.0)
     }
 
     @Test

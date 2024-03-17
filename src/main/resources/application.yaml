@@ -1,4 +1,4 @@
-#jwt:
-#  key: ${JWT_KEY}
-#  access-token-expiration: 3600000
-#  refresh-token-expiration: 86400000
+jwt:
+  key: "my-32-character-ultra-secure-and-ultra-long-secret"
+  access-token-expiration: 3600000
+  refresh-token-expiration: 86400000
