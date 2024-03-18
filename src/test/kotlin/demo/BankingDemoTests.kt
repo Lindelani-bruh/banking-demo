@@ -38,12 +38,11 @@ class BankingDemoTests (
 
     @Test
     fun `Assert transfer was successful, status code`() {
-
         val johnDoe = userRepository.save(Customer( "JohnB", "John", "Doe", "example-1@demo.com", "12345"))
         val fromAccount = accountRepository.save( Account(balance = 20000.00, type = "savings", owner = johnDoe.id.toString()))
 
         val blink180 = userRepository.save(Customer( "blink180", "blink", "180", "example-2@demo.com", "12345"))
-        val destinationAccount = accountRepository.save( Account(balance = 20000.00, type = "savings", owner = johnDoe.id.toString()))
+        val destinationAccount = accountRepository.save( Account(balance = 20000.00, type = "savings", owner = blink180.id.toString()))
 
         val TEST_COMMAND = TransferCommand(2000.00, destinationAccount.id.toString(), "ZAR", fromAccount.id.toString())
 
