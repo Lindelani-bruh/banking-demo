@@ -24,7 +24,7 @@ class TransferCommandHandler (
 
         //TODO: do something with the currency.
         if(!from.isEmpty && isAbleToTransfer(command.amount, from.get(), to.get())){
-            getLogger().info("Transfering funds from ${command.fromAccount} to ${command.destinationAccount}.")
+            getLogger().info("Processing transfer of funds from ${command.fromAccount} to ${command.destinationAccount}.")
             //Send money
             accountRepository.save(
                 Account(

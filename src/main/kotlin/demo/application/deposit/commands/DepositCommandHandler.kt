@@ -15,9 +15,11 @@ class DepositCommandHandler (private val accountRepository: IAccountRepository, 
 
     override suspend fun handle(command: DepositCommand) {
         // TODO convert with some currency exchange thing.
-        getLogger().info("deposit-amount account ${command.amount} to owner ${command.accountId}")
-        if(command.amount > 0){
-            val account = accountRepository.findById(command.accountId)
+        getLogger().info("Processing deposit amount ${command.amount} to owner ${command.accountId}")
+        val account = accountRepository.findById(command.accountId)
+
+        if(command.amount > 0 && !account.isEmpty){
+
             accountRepository.save(
                 Account(
                     balance=account.get().balance + command.amount,

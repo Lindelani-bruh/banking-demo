@@ -25,7 +25,7 @@ class BankingController (private val mediator: Mediator) {
     }
 
     @PostMapping("$DEPOSIT_PATH/{accountid}")
-    fun deposit(@RequestBody command: DepositContract, @PathVariable accountid:String) {
+    fun deposit(@RequestBody command: DepositRequest, @PathVariable accountid:String) {
         runBlocking {
             mediator.send(DepositCommand(command.amount, command.currency, accountid ))
         }
@@ -33,14 +33,14 @@ class BankingController (private val mediator: Mediator) {
 
 
     @PostMapping("$TRANSFER_PATH/{accountid}")
-    fun transfer(@RequestBody command: TransferContract, @PathVariable accountid:String) {
+    fun transfer(@RequestBody command: TransferRequest, @PathVariable accountid:String) {
         runBlocking {
             mediator.send(TransferCommand(command.amount, command.destinationAccount, command.currency, accountid ))
         }
     }
 
     @PostMapping(ACCOUNT_PATH)
-    fun account(@RequestBody command: AccountContract) {
+    fun account(@RequestBody command: AccountRequest) {
         runBlocking {
             mediator.send(
                 RegisterCommand(command.username,
@@ -54,13 +54,11 @@ class BankingController (private val mediator: Mediator) {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    @GetMapping("$ACCOUNT_PATH/{accountid}")
-    fun getAccount(@PathVariable accountid: String) : Iterable<Account>{
-
+    @GetMapping("$ACCOUNT_PATH/{email}")
+    fun getAccount(@PathVariable email: String) : Iterable<Account>{
         var data = runBlocking {
-            mediator.send(AccountQuery(accountid))
+            mediator.send(AccountQuery(email))
         }
-
         return data
     }
 
@@ -75,11 +73,11 @@ class BankingController (private val mediator: Mediator) {
 
 
 // Contracts
-class DepositContract (
+class DepositRequest (
     val amount: Double,
     val currency: String)
 
-class AccountContract (
+class AccountRequest (
     val username: String,
     var firstname: String,
     var lastname: String,
@@ -87,7 +85,7 @@ class AccountContract (
     var password: String,
     var type: String)
 
-class TransferContract (
+class TransferRequest (
     val amount: Double,
     val currency: String,
     val destinationAccount:String)

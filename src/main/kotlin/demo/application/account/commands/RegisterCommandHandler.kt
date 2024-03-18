@@ -18,7 +18,6 @@ class RegisterCommandHandler (
 )
     : CommandHandler<RegisterCommand> {
 
-
     fun getLogger(): Logger = LoggerFactory.getLogger(this.javaClass.name)
 
     override suspend fun handle(command: RegisterCommand) {

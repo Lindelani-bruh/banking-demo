@@ -7,8 +7,6 @@ import demo.domain.IUserRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import kotlin.jvm.optionals.toList
-
 
 @Component
 class AccountQueryHandler(private val accountRepository: IAccountRepository, private val userRepository: IUserRepository) :
@@ -17,12 +15,19 @@ class AccountQueryHandler(private val accountRepository: IAccountRepository, pri
     fun getLogger(): Logger = LoggerFactory.getLogger(this.javaClass.name)
 
     override suspend  fun handle(query: AccountQuery): Iterable<Account> {
-        val accounts = accountRepository.findAll().toList()
-        accounts.forEach{
-            getLogger().info("account :  ${it.owner}, ${it.balance}, account: ${it.id} " )
-        }
+        var accounts:List<Account> =  listOf()
+        val user = userRepository.findByEmail(query.email)
 
-        getLogger().info("get-account ${query.id}" )
-        return accountRepository.findById(query.id).toList()
+        if (!user.equals(null)){
+            accounts = accountRepository.findByOwner(user.id.toString())
+            /*accounts.forEach{
+                getLogger().info("account :  ${it.owner}, ${it.balance}, account: ${it.id} " )
+            }*/
+            getLogger().info("Found ${accounts.size} account for: ${query.email}" )
+        }
+        else {
+            getLogger().error("Unable to retrieve account for ${query.email}")
+        }
+        return accounts
     }
 }
