@@ -7,6 +7,7 @@ import demo.domain.IUserRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class AccountQueryHandler(private val accountRepository: IAccountRepository, private val userRepository: IUserRepository) :
@@ -15,19 +16,16 @@ class AccountQueryHandler(private val accountRepository: IAccountRepository, pri
     fun getLogger(): Logger = LoggerFactory.getLogger(this.javaClass.name)
 
     override suspend  fun handle(query: AccountQuery): Iterable<Account> {
-        var accounts:List<Account> =  listOf()
+        var accounts:Optional<List<Account>> =  Optional.of(listOf())
         val user = userRepository.findByEmail(query.email)
 
-        if (!user.equals(null)){
-            accounts = accountRepository.findByOwner(user.id.toString())
-            /*accounts.forEach{
-                getLogger().info("account :  ${it.owner}, ${it.balance}, account: ${it.id} " )
-            }*/
-            getLogger().info("Found ${accounts.size} account for: ${query.email}" )
+        if (!user.isEmpty){
+            accounts = accountRepository.findByOwner(user.get().id.toString())
+            getLogger().info("Found ${accounts.get().size} account for: ${query.email}" )
         }
         else {
             getLogger().error("Unable to retrieve account for ${query.email}")
         }
-        return accounts
+        return accounts.get()
     }
 }

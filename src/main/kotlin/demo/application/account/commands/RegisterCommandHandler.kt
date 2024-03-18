@@ -5,6 +5,7 @@ import demo.domain.Account
 import demo.domain.Customer
 import demo.domain.IAccountRepository
 import demo.domain.IUserRepository
+import jakarta.transaction.Transactional
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -20,6 +21,7 @@ class RegisterCommandHandler (
 
     fun getLogger(): Logger = LoggerFactory.getLogger(this.javaClass.name)
 
+    @Transactional
     override suspend fun handle(command: RegisterCommand) {
         getLogger().info("registering account ${command.username}")
         val user = userRepository.save(

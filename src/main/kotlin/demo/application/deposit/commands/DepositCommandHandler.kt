@@ -5,6 +5,7 @@ import demo.domain.Account
 import demo.domain.IAccountRepository
 import demo.domain.ITransactionRepository
 import demo.domain.Transaction
+import jakarta.transaction.Transactional
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component
 class DepositCommandHandler (private val accountRepository: IAccountRepository, private val transactionRepository: ITransactionRepository): CommandHandler<DepositCommand> {
     fun getLogger(): Logger = LoggerFactory.getLogger(this.javaClass.name)
 
+    @Transactional
     override suspend fun handle(command: DepositCommand) {
         // TODO convert with some currency exchange thing.
         getLogger().info("Processing deposit amount ${command.amount} to owner ${command.accountId}")

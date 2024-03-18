@@ -5,8 +5,6 @@ import demo.application.auth.TokenService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
@@ -21,7 +19,6 @@ class JwtAuthenticationFilter(
     private val tokenService: TokenService,
 ) : OncePerRequestFilter() {
 
-    fun getLogger(): Logger = LoggerFactory.getLogger(this.javaClass.name)
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -34,15 +31,12 @@ class JwtAuthenticationFilter(
         }
         val jwtToken = authHeader!!.extractTokenValue()
         val email = tokenService.extractEmail(jwtToken)
-        getLogger().info("Email extracted from token: ${email}")
         if (email != null && SecurityContextHolder.getContext().authentication == null) {
             val foundUser = userDetailsService.loadUserByUsername(email)
 
             if (tokenService.isValid(jwtToken, foundUser)){
-                getLogger().info("Token successfully validated: ${email}")
                 updateContext(foundUser, request)
             }
-
             filterChain.doFilter(request, response)
         }
     }
@@ -54,8 +48,6 @@ class JwtAuthenticationFilter(
     private fun updateContext(foundUser: UserDetails, request: HttpServletRequest) {
         val authToken = UsernamePasswordAuthenticationToken(foundUser, null, foundUser.authorities)
         authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
-        getLogger().info("Token stuff"+authToken.name)
-        getLogger().info("Token stuff"+ authToken.details)
         SecurityContextHolder.getContext().authentication = authToken
     }
 }

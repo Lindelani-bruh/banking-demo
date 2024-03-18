@@ -4,8 +4,6 @@ import demo.config.JwtProperties
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.*
@@ -14,8 +12,6 @@ import java.util.*
 class TokenService(
     jwtProperties: JwtProperties
 ) {
-
-    fun getLogger(): Logger = LoggerFactory.getLogger(this.javaClass.name)
 
     private val secretKey = Keys.hmacShaKeyFor(
         jwtProperties.key.toByteArray()
@@ -37,8 +33,6 @@ class TokenService(
     fun isValid(token: String, userDetails: UserDetails): Boolean {
         val email = extractEmail(token)
         var results = userDetails.username == email && !isExpired(token)
-        getLogger().info("Token is valid: ${results}")
-        getLogger().info("User details username ${ userDetails.username }, Extracted from email : ${email}")
         return results
     }
     fun extractEmail(token: String): String? =

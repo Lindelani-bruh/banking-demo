@@ -33,11 +33,12 @@ Else you run the application using Graddle to build and run the application in y
 ```
 
 ### What's next
-The application is a pretty basic banking restful API service with 4 API endpoints. 
+The application is a pretty basic banking restful API service with 5 API endpoints. 
 * ```POST``` api/auth
 * ```GET``` api/account
 * ```POST``` api/deposit
 * ```POST``` api/transfer
+* ```GET``` api/reports
 
 It comes with two pre-configured users that you can find in the directory ```demo\src\main\kotlin\demo\config``` with their credentials.
 I use an in-memory DB therefore no need to worry about DB setup. To start testing the application go ahead and import the postman collections contained within this project ```Banking-demo.pastman_collection```.

@@ -5,6 +5,7 @@ import demo.domain.Account
 import demo.domain.IAccountRepository
 import demo.domain.ITransactionRepository
 import demo.domain.Transaction
+import jakarta.transaction.Transactional
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -18,6 +19,7 @@ class TransferCommandHandler (
 
     fun getLogger(): Logger = LoggerFactory.getLogger(this.javaClass.name)
 
+    @Transactional
     override suspend fun handle(command: TransferCommand) {
         val from = accountRepository.findById(command.fromAccount);
         val to = accountRepository.findById(command.destinationAccount);
