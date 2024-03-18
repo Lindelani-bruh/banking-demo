@@ -1,7 +1,7 @@
 package demo.config
 
-import demo.auth.CustomUserDetailsService
-import demo.auth.TokenService
+import demo.application.auth.CustomUserDetailsService
+import demo.application.auth.TokenService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

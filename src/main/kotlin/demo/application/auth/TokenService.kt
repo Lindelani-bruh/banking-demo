@@ -1,4 +1,4 @@
-package demo.auth
+package demo.application.auth
 
 import demo.config.JwtProperties
 import io.jsonwebtoken.Claims

@@ -1,4 +1,4 @@
-package demo.auth
+package demo.application.auth
 
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component

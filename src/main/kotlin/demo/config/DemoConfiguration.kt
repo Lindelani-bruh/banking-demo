@@ -1,6 +1,6 @@
 package demo.config
 
-import demo.auth.CustomUserDetailsService
+import demo.application.auth.CustomUserDetailsService
 import demo.domain.*
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.context.properties.EnableConfigurationProperties

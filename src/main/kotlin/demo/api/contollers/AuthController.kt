@@ -1,6 +1,6 @@
 package demo.api.contollers
 
-import demo.auth.AuthenticationService
+import demo.application.auth.AuthenticationService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
